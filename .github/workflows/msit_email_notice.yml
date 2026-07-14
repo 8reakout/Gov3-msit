@@ -2,7 +2,7 @@ name: MSIT Email Notice Monitor
 
 on:
   schedule:
-    - cron: "12 6 * * *"  # 매주 월요일 11:07 KST
+    - cron: "13 23 * * *"  # 매주 월요일 11:07 KST
   workflow_dispatch:
 
 permissions:
@@ -43,6 +43,6 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add seen_notice_ids.json latest_notices.json
+          git add seen_notice_ids.json 
           git commit -m "Update seen MSIT notices" || echo "No changes to commit"
           git push
