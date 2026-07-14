@@ -1,0 +1,8 @@
+.env
+config.yaml
+latest_notices.json
+__pycache__/
+*.pyc
+.venv/
+msit_notice_latest.html
+msit_notice_*.html

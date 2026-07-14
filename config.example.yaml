@@ -1,0 +1,16 @@
+msit:
+  api_url: "http://apis.data.go.kr/1721000/msitannouncementinfo/businessAnnouncMentList"
+  service_key: ""
+
+  lookback_days: 60
+  max_pages: 10
+  html_fallback_enabled: false
+
+  params:
+    pageNo: 1
+    numOfRows: 10
+    returnType: "xml"
+
+state:
+  seen_file: "seen_notice_ids.json"
+  latest_file: "latest_notices.json"
