@@ -2,7 +2,7 @@ name: MSIT Email Notice Monitor
 
 on:
   schedule:
-    - cron: "13 23 * * 3"  # 매주 월요일 11:07 KST
+    - cron: "13 23 * * 2"  # 매주 월요일 11:07 KST
   workflow_dispatch:
 
 permissions:
