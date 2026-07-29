@@ -52,13 +52,13 @@ def _notice_rows(notices: list[Notice]) -> str:
     if not notices:
         return """
         <tr>
-            <td colspan="7" class="empty">신규 공고가 없습니다.</td>
+            <td colspan="6" class="empty">신규 공고가 없습니다.</td>
         </tr>
         """
 
     rows: list[str] = []
     for idx, notice in enumerate(notices, 1):
-        detail_link = _link_html(notice.url, "바로가기") if notice.url else "-"
+        title_html = _link_html(notice.url, notice.title or "-") if notice.url else escape(notice.title or "-")
         attachment_link = _link_html(notice.file_url, notice.file_name or "첨부파일") if notice.file_url else "-"
         manager = " / ".join(x for x in [notice.manager_name, notice.manager_tel] if x) or "-"
 
@@ -66,12 +66,11 @@ def _notice_rows(notices: list[Notice]) -> str:
             f"""
             <tr>
                 <td class="num">{idx}</td>
-                <td class="title-cell"><div class="notice-title">{escape(notice.title)}</div></td>
+                <td class="title-cell"><div class="notice-title">{title_html}</div></td>
                 <td class="dept">{escape(notice.department or '-')}</td>
                 <td class="manager">{escape(manager)}</td>
                 <td class="date">{escape(notice.registered_date or '-')}</td>
                 <td class="attach">{attachment_link}</td>
-                <td class="link">{detail_link}</td>
             </tr>
             """
         )
@@ -108,7 +107,6 @@ def build_html_message(new_notices: list[Notice], old_notices: list[Notice], tot
     .manager {{ width:120px; text-align:center; }}
     .date {{ width:105px; text-align:center; white-space:nowrap; }}
     .attach {{ width:90px; text-align:center; }}
-    .link {{ width:80px; text-align:center; }}
     a {{ color:#0070c9; text-decoration:underline; font-weight:700; }}
     .empty {{ text-align:center; color:#666; padding:28px; }}
     .old-summary {{ margin-top:22px; padding:15px 17px; background:#f8fafc; border:1px solid #e3e7ec; color:#555; line-height:1.7; font-size:13px; }}
@@ -141,7 +139,6 @@ def build_html_message(new_notices: list[Notice], old_notices: list[Notice], tot
                     <th class="manager">담당/연락처</th>
                     <th class="date">등록일</th>
                     <th class="attach">첨부</th>
-                    <th class="link">링크</th>
                 </tr>
             </thead>
             <tbody>
