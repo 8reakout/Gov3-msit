@@ -39,6 +39,16 @@ def _strip_html(value: str) -> str:
     return value
 
 
+
+
+def _is_excluded_title(title: str) -> bool:
+    """공고명 기준 제외 필터입니다.
+
+    예: '선정결과', '선정 결과'가 포함된 공고는 수집하지 않습니다.
+    """
+    normalized_title = re.sub(r"\s+", "", _strip_html(title or ""))
+    return "선정결과" in normalized_title
+
 def _first_value(item: dict[str, Any], candidates: list[str]) -> str:
     for key in candidates:
         if key in item and item[key] not in (None, ""):
@@ -180,6 +190,9 @@ def _build_params(
 def _convert_api_item_to_notice(item: dict[str, Any], lookback_days: int) -> Notice | None:
     title = _strip_html(_first_value(item, ["subject", "title", "nttSj", "bbscttSj", "공고명", "제목"]))
     if not title:
+        return None
+
+    if _is_excluded_title(title):
         return None
 
     registered_date = _normalize_date(_first_value(item, ["pressDt", "regDt", "nttRgstDt", "등록일", "작성일"]))
@@ -351,6 +364,9 @@ def _convert_html_row_to_notice(row_html: str, base_url: str, lookback_days: int
             detail_url = _normalize_url(href, base_url)
             break
     if not title:
+        return None
+
+    if _is_excluded_title(title):
         return None
 
     registered_date = ""
